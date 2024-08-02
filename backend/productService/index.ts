@@ -22,7 +22,7 @@ mongoose.connect('mongodb://localhost:27017/kafka-product')
     })
 
 
-app.post('/add-products', authenticate, async(req:Request, res:Response) => {
+app.post('/add-products', async(req:Request, res:Response) => {
     const { name, price} = req.body;
 
     const newProduct = new Product({ name, price})
@@ -37,7 +37,7 @@ app.post('/add-products', authenticate, async(req:Request, res:Response) => {
     }
 })
 
-app.get('/products',authenticate, async (req: Request, res: Response) => {
+app.get('/products', async (req: Request, res: Response) => {
     try {
       const products = await Product.find();
       res.json(products);
