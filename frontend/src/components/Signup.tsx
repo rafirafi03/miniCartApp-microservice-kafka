@@ -28,6 +28,8 @@ const Signup: React.FC = () => {
         withCredentials:true
       })
 
+      console.log(response, 'resssponseeeeeeeeeee')
+
       if(response.status === 200){
         navigate('/login')
         return null

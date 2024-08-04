@@ -6,28 +6,27 @@ interface CustomRequest extends Request {
   user?: string | JwtPayload;
 }
 
-
 const authenticateToken = (req: CustomRequest, res: Response, next: NextFunction): void => {
+  // Get the token from the cookie
   const token = req.cookies['token'];
-  console.log('Token:', token); // Debugging line
 
+  // If token is not present, respond with an error
   if (!token) {
     res.status(401).json({ message: 'Access denied. No token provided.' });
     return;
   }
 
+  // Verify the token
   jwt.verify(token, 'secret-token', (err: jwt.VerifyErrors | null, decoded: string | JwtPayload | undefined) => {
     if (err) {
-      console.log('JWT Error:', err); // Debugging line
       res.status(403).json({ message: 'Invalid token.' });
       return;
     }
 
-    console.log('Decoded:', decoded); // Debugging line
+    // Attach the decoded token to the request object
     req.user = decoded;
     next();
   });
 };
-
 
 export default authenticateToken;

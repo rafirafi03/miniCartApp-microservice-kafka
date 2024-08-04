@@ -1,5 +1,5 @@
 {
-  "name": "userservice",
+  "name": "cartservice",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,6 +13,7 @@
     "cors": "^2.8.5",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
+    "kafka-node": "^5.0.0",
     "mongoose": "^8.5.2",
     "nodemon": "^3.1.4",
     "ts-node": "^10.9.2"

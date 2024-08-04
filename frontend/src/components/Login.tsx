@@ -30,6 +30,7 @@ const Login: React.FC = () => {
       })
 
       if(response.status === 200) {
+        console.log(response.data.token,"restknnnnnnnnnnnnnn")
         dispatch(setToken(response.data.token))
         navigate('/')
       } else{

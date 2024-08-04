@@ -1,4 +1,4 @@
-// import { useState } from 'react';
+
 import './index.css';
 import {
   BrowserRouter as Router,
@@ -9,13 +9,13 @@ import {
 import Signup from './components/Signup';
 import Login from './components/Login';
 import ListProduct from './components/ListProduct';
+import Cart from './components/Cart'
 import { RootState } from "./store/AuthStore";
 import { useSelector } from "react-redux";
 
 
 function App() {
 
-  // const [refreshList, setRefreshList] = useState(false);
 
   const userId = useSelector((state:RootState)=> state.auth.userId)
   console.log(userId)
@@ -43,6 +43,12 @@ function App() {
 
                 <Navigate to="/login" />
               )
+            }
+          />
+          <Route
+            path='/cart'
+            element={
+              <Cart/>
             }
           />
         </Routes>

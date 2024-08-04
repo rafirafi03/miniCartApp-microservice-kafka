@@ -4,13 +4,14 @@ import mongoose from 'mongoose';
 import User, {userModel} from './userModel';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
+import authentication from './authentication';
 
 const app = express()
 
 app.use(cookieParser())
 app.use(express.json())
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'http://localhost:5000',
     credentials: true
 }))
 
@@ -39,7 +40,7 @@ app.post('/signup', async(req: Request, res: Response)=> {
     }
 })
 
-app.get('/users/:id', async(req: Request, res:Response) => {
+app.get('/users/:id',authentication, async(req: Request, res:Response) => {
     const userId = req.params.id;
 
     try {
@@ -63,40 +64,29 @@ app.get('/logout', async(req: Request, res: Response) => {
             httpOnly: true,
         })
 
-        res.status(200).send({error: "Error loging out user"})
+        res.status(200).send({message: "logged out"})
     } catch (error) {
-        
+        console.error("Error retrieving user:", error);
+        res.status(500).send({ error: "Error loging out user" });
     }
 })
 
-app.post('/login', async(req: Request, res: Response) => {
-
+app.post('/login', async (req: Request, res: Response) => {
     const { email, password } = req.body;
-
     try {
-        const user = await User.findOne({email})
-
-        if(!user) {
-            return res.status(401).send({error: 'Invalid email'})
+        const user = await User.findOne({ email });
+        if (!user || user.password !== password) {
+            return res.status(401).send({ error: 'Invalid email or password' });
         }
-
-        if(user.password !== password) {
-            return res.status(401).send({error:"Invalid password"})
-        }
-
-        const token = jwt.sign({ userId: user.id }, 'secret-token', {
-            expiresIn : '1h',
-        })
-
-        res.cookie('token', token)
-
-        res.status(200).send({token})
-
+        const token = jwt.sign({ userId: user.id }, 'secret-token', { expiresIn: '1h' });
+        console.log(token,"tknnnnnnnnnnnnnnnnnnnnnnn")
+        res.cookie('token', token, { httpOnly: true });
+        res.status(200).send({ token });
     } catch (error) {
         console.error(error);
-        res.status(500).send({error: 'Error logging in'})
+        res.status(500).send({ error: 'Error logging in' });
     }
-})
+});
 
 const Port = 4000;
 
