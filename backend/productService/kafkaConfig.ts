@@ -10,7 +10,7 @@ producer.on('ready', ()=> {
 })
 
 producer.on('error', (err) => {
-    console.error('product producer error:', err)
+    console.error('product producer error :', err)
 })
 
 export { producer }
